@@ -1,4 +1,4 @@
-package com.lozano.Showcase_Security_Service;
+package com.org.securityservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

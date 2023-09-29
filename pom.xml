@@ -8,7 +8,7 @@
 		<version>3.1.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.lozano</groupId>
+	<groupId>com.org</groupId>
 	<artifactId>Showcase_Security_Service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Showcase_Security_Service</name>

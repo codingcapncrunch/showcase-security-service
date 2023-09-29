@@ -1,4 +1,4 @@
-package com.lozano.Showcase_Security_Service;
+package com.org.securityservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
