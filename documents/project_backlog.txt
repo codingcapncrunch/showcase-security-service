@@ -1,7 +1,7 @@
 
 Todo
-- Add spring security
-- Add healthcheck API
+Done - Add spring security
+Done - Add healthcheck API
 - Create an App JWT request API (no credentials required)
 - Create a set of client credentials
 - Update App JWT request API to require client credentials
