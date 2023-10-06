@@ -1,47 +1,35 @@
 package com.org.securityservice.api.controller;
 
-import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Value;
+import com.org.securityservice.api.model.TokenRequest;
+import com.org.securityservice.api.translator.TokenTranslator;
+import com.org.securityservice.domain.service.token.TokenService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-
-import io.jsonwebtoken.Jwts;
-
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/token")
 public class TokenController {
 
-    @Value("#{new Integer('${jwtExpirationInMs}')}")
-    private Integer jwtExpirationInMs;
+    private TokenTranslator tokenTranslator;
+    private TokenService tokenService;
 
-    @Value("{jwtSecret}")
-    private String jwtSecret;
+    @Autowired
+    public TokenController(TokenTranslator tokenTranslator, TokenService tokenService) {
+        this.tokenTranslator = tokenTranslator;
+        this.tokenService = tokenService;
+    }
 
     @GetMapping
-    public ResponseEntity tokenRequest(@RequestParam(name = "val") String userName){
+    public ResponseEntity tokenRequest(@RequestBody TokenRequest tokenRequest){
 
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("claim1", "test1");
-        claims.put("claim2", "test2");
+        String token = this.tokenService.generateToken(this.tokenTranslator.toDomainModel(tokenRequest));
 
-        return ResponseEntity.ok(this.generateToken(claims, userName));
+        return ResponseEntity.ok(token);
     }
 
-
-    private String generateToken(Map<String, Object> claims, String subject){
-        return Jwts.builder().setClaims(claims)
-                .setSubject(subject)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 360000))
-                .signWith(SignatureAlgorithm.HS512, "rogerdogerplanthatboat").compact();
-    }
 
 }
