@@ -1,9 +1,13 @@
 package com.org.securityservice.domain.service.token;
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
+
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 
 import com.org.securityservice.domain.model.TokenRequest;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +20,6 @@ public class TokenServiceImpl implements TokenService {
     @Value("#{new Integer('${jwtExpirationInMs}')}")
     private Integer jwtExpirationInMs;
 
-    @Value("{jwtSecret}")
-    private String jwtSecret;
 
     @Override
     public String generateToken(TokenRequest tokenRequest) {
@@ -35,7 +37,11 @@ public class TokenServiceImpl implements TokenService {
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationInMs))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
+                .signWith(SignatureAlgorithm.HS512, this.getSigningKey()).compact();
+    }
+
+    private Key getSigningKey() {
+        return Keys.secretKeyFor(SignatureAlgorithm.HS512);
     }
 
 }
