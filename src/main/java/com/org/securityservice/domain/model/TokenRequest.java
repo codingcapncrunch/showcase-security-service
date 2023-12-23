@@ -11,4 +11,8 @@ public class TokenRequest {
 
     private Map<String, Object> claims;
 
+    public void addClaim(String claim, String value){
+        this.claims.put(claim, value);
+    }
+
 }

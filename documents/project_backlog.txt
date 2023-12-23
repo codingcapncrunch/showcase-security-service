@@ -1,5 +1,5 @@
 
-Todo
+Original Todo:
 Done - Add spring security
 Done - Add healthcheck API
 Done - Create an App JWT request API (no credentials required)
@@ -9,3 +9,6 @@ Done - Create an App JWT request API (no credentials required)
 - Create and assign various client properties (e.g. roles)
 - Expose administrative APIs to manage client credentials and client properties
 - Create a set of APIs that require various client JWT roles
+
+Other Todo:
+- Create and capture JWT signing key for validation (perhaps as a bean)

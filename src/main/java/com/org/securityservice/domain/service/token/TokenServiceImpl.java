@@ -1,16 +1,14 @@
 package com.org.securityservice.domain.service.token;
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
-
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 
 import com.org.securityservice.domain.model.TokenRequest;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.security.Key;
 import java.util.Date;
 import java.util.Map;
 
@@ -29,7 +27,20 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public boolean isExpiredToken(String token) {
+        //TODO
         return false;
+    }
+
+    @Override
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        //TODO
+        return true;
+    }
+
+    @Override
+    public String extractUserName(String token) {
+        //TODO
+        return null;
     }
 
     private String generateToken(Map<String, Object> claims, String subject){
