@@ -1,11 +1,13 @@
 package com.org.securityservice.domain.service.token;
 
-import com.org.securityservice.domain.model.TokenRequest;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public interface TokenService {
 
-    String generateToken(TokenRequest tokenRequest);
+    public String generateJwtToken(UserDetails userDetails);
 
-    boolean isExpiredToken(String token);
+    public Boolean validateJwtToken(String token, UserDetails userDetails);
+
+    public String getUsernameFromToken(String token);
 
 }
