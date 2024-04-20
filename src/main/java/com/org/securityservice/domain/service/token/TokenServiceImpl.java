@@ -18,7 +18,8 @@ public class TokenServiceImpl implements TokenService, Serializable {
 
     private static final long serialVersionUID = 7008375124389347049L;
 
-    private static final long TOKEN_VALIDITY = 10 * 60 * 60;
+    // (30*100*100 milliseconds = 300 seconds) * 6 = .5 hr
+    private static final long TOKEN_VALIDITY = 30 * 100 * 100 * 12;
 
     @Value("${jwtsecret}")
     private String jwtSecret;
@@ -26,9 +27,10 @@ public class TokenServiceImpl implements TokenService, Serializable {
     @Override
     public String generateJwtToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("claim1", "test");
         return Jwts.builder().setClaims(claims).setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
     }
 
