@@ -24,13 +24,14 @@ public class BcryptPasswordEncoderController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @GetMapping("/encodePassword")
+    @PostMapping("/encodePassword")
     public ResponseEntity bcryptPassword(@RequestParam(name = "pw") String password){
-        if (StringUtils.isEmpty(password)){
+        if (!StringUtils.isEmpty(password)){
             log.info("bCryptEncodedPassword: {}", this.passwordEncoder.encode(password));
             return ResponseEntity.ok("password encoded successfully - check logs");
         }
         Utils.throwException(new AppException(ExceptionEnum.PASS1000));
         return null;
     }
+
 }

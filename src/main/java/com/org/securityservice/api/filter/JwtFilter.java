@@ -25,13 +25,11 @@ import java.io.IOException;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
-    @Qualifier("handlerExceptionResolver")
     private HandlerExceptionResolver resolver;
     private JwtUserDetailsService jwtUserDetailsService;
     private TokenService tokenService;
 
-    @Autowired
-    public JwtFilter(HandlerExceptionResolver resolver, JwtUserDetailsService jwtUserDetailsService, TokenService tokenService) {
+    public JwtFilter(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver, JwtUserDetailsService jwtUserDetailsService, TokenService tokenService) {
         this.resolver = resolver;
         this.jwtUserDetailsService = jwtUserDetailsService;
         this.tokenService = tokenService;

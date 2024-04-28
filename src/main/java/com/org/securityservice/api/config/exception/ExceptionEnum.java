@@ -6,6 +6,7 @@ public enum ExceptionEnum {
 
     Unknown5000("Unknown exception", HttpStatus.INTERNAL_SERVER_ERROR),
     AUTH1000("Authentication exception", HttpStatus.BAD_REQUEST),
+    AUTH1001("Authentication exception", HttpStatus.BAD_REQUEST),
     JWT1000("JWT Invalid", HttpStatus.BAD_REQUEST),
     JWT1001("JWT Invalid", HttpStatus.BAD_REQUEST),
     JWT1002("JWT Parse Exception", HttpStatus.BAD_REQUEST),

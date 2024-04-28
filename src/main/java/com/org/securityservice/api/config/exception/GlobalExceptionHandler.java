@@ -15,20 +15,21 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {AppException.class})
     public ResponseEntity<Object> handleAppException(AppException ex){
         if (ex.getInternalMessage()!=null){
-            log.error("ErrorCode: {}, AppException: {}, status: {}, internal message: {}", ex.getExceptionEnum().name(), ex.getUserMessage(), ex.getStatus().toString(), ex.getInternalMessage());
+            log.error("ErrorCode: {}, AppException: {}, Status: {}, internal message: {}", ex.getExceptionEnum().name(), ex.getUserMessage(), ex.getStatus().toString(), ex.getInternalMessage());
         } else {
-            log.error("ErrorCode: {}, AppException: {}, status: {}", ex.getExceptionEnum().name(), ex.getUserMessage(), ex.getStatus().toString());
+            log.error("ErrorCode: {}, AppException: {}, Status: {}", ex.getExceptionEnum().name(), ex.getUserMessage(), ex.getStatus().toString());
         }
         return new ResponseEntity<>(ex.getAppExceptionBody(), ex.getStatus());
     }
 
     @ExceptionHandler(value = {InternalAuthenticationServiceException.class})
     public ResponseEntity<Object> handleInternalAuthenticationServiceException(InternalAuthenticationServiceException ex){
-        AppException appException = new AppException(ExceptionEnum.AUTH1000);
+        AppException appException = new AppException(ExceptionEnum.AUTH1001);
         if (ex.getMessage()!=null) {
-            appException.setInternalMessage(ex.getMessage());
+            log.error("ErrorCode: {}, AppException: {}, InternalMessage: {}", appException.getExceptionEnum().name(), appException.getUserMessage(), ex.getMessage());
+        } else {
+            log.error("ErrorCode: {}, AppException: {}", appException.getExceptionEnum().name(), appException.getUserMessage());
         }
-        log.error("ErrorCode: {}, AppException: {}", appException.getExceptionEnum().name(), appException.getUserMessage());
         return new ResponseEntity<>(appException.getAppExceptionBody(), appException.getStatus());
     }
 
@@ -37,9 +38,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleSignatureException(SignatureException ex){
         AppException appException = new AppException(ExceptionEnum.JWT1000);
         if (ex.getMessage()!=null) {
-            appException.setInternalMessage(ex.getMessage());
+            log.error("ErrorCode: {}, AppException: {}, InternalMessage: {}", appException.getExceptionEnum().name(), appException.getUserMessage(), ex.getMessage());
+        } else {
+            log.error("ErrorCode: {}, AppException: {}", appException.getExceptionEnum().name(), appException.getUserMessage());
         }
-        log.error("ErrorCode: {}, AppException: {}", appException.getExceptionEnum().name(), appException.getUserMessage());
         return new ResponseEntity<>(appException.getAppExceptionBody(), appException.getStatus());
     }
 
@@ -48,9 +50,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleSignatureException(MalformedJwtException ex){
         AppException appException = new AppException(ExceptionEnum.JWT1001);
         if (ex.getMessage()!=null) {
-            appException.setInternalMessage(ex.getMessage());
+            log.error("ErrorCode: {}, AppException: {}, InternalMessage: {}", appException.getExceptionEnum().name(), appException.getUserMessage(), ex.getMessage());
+        } else {
+            log.error("ErrorCode: {}, AppException: {}", appException.getExceptionEnum().name(), appException.getUserMessage());
         }
-        log.error("ErrorCode: {}, AppException: {}", appException.getExceptionEnum().name(), appException.getUserMessage());
         return new ResponseEntity<>(appException.getAppExceptionBody(), appException.getStatus());
     }
 
