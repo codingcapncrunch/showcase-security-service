@@ -1,7 +1,6 @@
 package com.org.securityservice.api.config;
 
 import com.org.securityservice.api.filter.JwtFilter;
-import com.org.securityservice.domain.service.user.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
