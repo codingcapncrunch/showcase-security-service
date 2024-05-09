@@ -6,6 +6,7 @@ import com.org.securityservice.domain.service.token.TokenService;
 import com.org.securityservice.domain.service.user.JwtUserDetailsService;
 import com.org.securityservice.utils.Utils;
 import io.jsonwebtoken.ExpiredJwtException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Log4j2
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
@@ -48,15 +50,17 @@ public class JwtFilter extends OncePerRequestFilter {
                 try {
                     username = tokenService.getUsernameFromToken(token);
                 } catch (IllegalArgumentException e) {
-                    System.out.println("Unable to get JWT Token");
+                    log.error("Unable to get JWT Token");
+                    Utils.throwException(new AppException(ExceptionEnum.JWT1004));
                 } catch (ExpiredJwtException e) {
-                    System.out.println("JWT Token has expired");
+                    log.error("JWT Token has expired");
+                    Utils.throwException(new AppException(ExceptionEnum.JWT1003));
                 } catch (Exception e){
-                    System.out.println("JWT Exception");
+                    log.error("JWT Exception");
                     Utils.throwException(new AppException(ExceptionEnum.JWT1002));
                 }
             } else {
-                System.out.println("Bearer String not found in token");
+                log.debug("Bearer token not found");
             }
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

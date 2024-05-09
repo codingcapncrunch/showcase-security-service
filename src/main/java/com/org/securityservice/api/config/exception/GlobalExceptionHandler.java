@@ -4,6 +4,7 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -54,6 +55,13 @@ public class GlobalExceptionHandler {
         } else {
             log.error("ErrorCode: {}, AppException: {}", appException.getExceptionEnum().name(), appException.getUserMessage());
         }
+        return new ResponseEntity<>(appException.getAppExceptionBody(), appException.getStatus());
+    }
+
+    @ExceptionHandler(value = {AccessDeniedException.class})
+    public ResponseEntity<Object> handleException(AccessDeniedException ex){
+        AppException appException = new AppException(ExceptionEnum.AUTH1002);
+        log.error("ErrorCode: {}, Unknown exception message: {}, ex stacktrace: {}", appException.getExceptionEnum().name(), ex.getMessage(), ex.toString());
         return new ResponseEntity<>(appException.getAppExceptionBody(), appException.getStatus());
     }
 

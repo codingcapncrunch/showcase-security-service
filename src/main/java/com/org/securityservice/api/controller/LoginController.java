@@ -1,15 +1,15 @@
 package com.org.securityservice.api.controller;
 
+import com.org.securityservice.api.config.exception.AppException;
+import com.org.securityservice.api.config.exception.ExceptionEnum;
 import com.org.securityservice.api.model.JwtRequestModel;
 import com.org.securityservice.api.model.JwtResponseModel;
 import com.org.securityservice.domain.service.token.TokenService;
 import com.org.securityservice.domain.service.user.JwtUserDetailsService;
+import com.org.securityservice.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,9 +35,11 @@ public class LoginController {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
+            Utils.throwException(new AppException(ExceptionEnum.USER1002, request.getUsername()));
         } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
+            Utils.throwException(new AppException(ExceptionEnum.USER1003, request.getUsername()));
+        } catch (InternalAuthenticationServiceException e){
+            Utils.throwException(new AppException(ExceptionEnum.AUTH1003, e.getMessage()));
         }
 
         final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(request.getUsername());
