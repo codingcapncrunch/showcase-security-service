@@ -1,11 +1,13 @@
 
 Todo
 Done - Add spring security
-Done - Add healthcheck API
+Done - Add healthcheck API (/health)
 Done - Create an App JWT request API (no credentials required)
-- Create a set of client credentials
-- Update App JWT request API to require client credentials
-- Create a set of APIs that require various client JWT roles
-- Create and assign various client properties (e.g. roles)
-- Expose administrative APIs to manage client credentials and client properties
-- Create a set of APIs that require various client JWT roles
+Done - Create a set of user credentials (in memory)
+Done - Update App JWT request API to require user credentials (i.e. /login, /encodePassword, and /secure)
+In Progress - Create and assign various user properties (roles/authorities)
+- Create a set of APIs that require various user JWT roles
+- Expose administrative APIs to manage user credentials and user properties (roles)
+
+Other:
+Done - Add global exception handling

@@ -6,13 +6,11 @@ import com.org.securityservice.domain.model.ShowCaseUser;
 import com.org.securityservice.domain.model.UserRegion;
 import com.org.securityservice.utils.Utils;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Log4j2
 @Service
@@ -22,10 +20,27 @@ public class UserRepositoryImpl implements UserRepository {
 
     public UserRepositoryImpl() {
         Map<String, ShowCaseUser> defaultUserMap = new HashMap<>();
-        for (int i=1; i<=4; i++){
-            String id = UUID.randomUUID().toString();
-            defaultUserMap.put(id, new ShowCaseUser("test"+String.valueOf(i)+"@gmail.com", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6", new ArrayList<>(), id, "displayName", UserRegion.US_CENTRAL));
-        }
+        String id = UUID.randomUUID().toString();
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        authorities.add(new SimpleGrantedAuthority("ROLE_TEST"));
+        defaultUserMap.put(id, new ShowCaseUser("user1@gmail.com", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6", authorities, id, "user1", UserRegion.US_EAST));
+
+        id = UUID.randomUUID().toString();
+        authorities.clear();
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        defaultUserMap.put(id, new ShowCaseUser("user2@gmail.com", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6", authorities, id, "user2", UserRegion.US_WEST));
+
+        id = UUID.randomUUID().toString();
+        authorities.clear();
+        authorities.add(new SimpleGrantedAuthority("ROLE_MANAGER"));
+        defaultUserMap.put(id, new ShowCaseUser("user3@gmail.com", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6", authorities, id, "user3", UserRegion.US_CENTRAL));
+
+        id = UUID.randomUUID().toString();
+        authorities.clear();
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        defaultUserMap.put(id, new ShowCaseUser("user4@gmail.com", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6", authorities, id, "user4", UserRegion.US_CENTRAL));
+
         this.userMap = defaultUserMap;
     }
 
