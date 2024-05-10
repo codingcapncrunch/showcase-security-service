@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class SecureController {
+public class SecureTestController {
 
     @GetMapping("/secure")
     public String hello(){
