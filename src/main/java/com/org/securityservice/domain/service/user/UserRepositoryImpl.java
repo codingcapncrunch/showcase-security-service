@@ -24,23 +24,22 @@ public class UserRepositoryImpl implements UserRepository {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        defaultUserMap.put(id, new ShowCaseUser("admin@gmail.com", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6", authorities, id, "user1", UserRegion.US_EAST));
+        defaultUserMap.put(id, new ShowCaseUser("admin@gmail.com", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6", authorities, id, "admin", UserRegion.US_EAST));
 
         id = UUID.randomUUID().toString();
         authorities.clear();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        defaultUserMap.put(id, new ShowCaseUser("user1@gmail.com", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6", authorities, id, "user2", UserRegion.US_WEST));
+        defaultUserMap.put(id, new ShowCaseUser("user1@gmail.com", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6", authorities, id, "user1", UserRegion.US_WEST));
 
         id = UUID.randomUUID().toString();
         authorities.clear();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        defaultUserMap.put(id, new ShowCaseUser("user2@gmail.com", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6", authorities, id, "user4", UserRegion.US_CENTRAL));
+        defaultUserMap.put(id, new ShowCaseUser("user2@gmail.com", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6", authorities, id, "user2", UserRegion.US_CENTRAL));
 
         id = UUID.randomUUID().toString();
         authorities.clear();
         authorities.add(new SimpleGrantedAuthority("ROLE_MANAGER"));
-        defaultUserMap.put(id, new ShowCaseUser("manager@gmail.com", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6", authorities, id, "user3", UserRegion.US_CENTRAL));
-
+        defaultUserMap.put(id, new ShowCaseUser("manager@gmail.com", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6", authorities, id, "manager", UserRegion.US_CENTRAL));
 
         this.userMap = defaultUserMap;
     }

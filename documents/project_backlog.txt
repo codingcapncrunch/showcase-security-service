@@ -11,3 +11,6 @@ In Progress - Create and assign various user properties (roles/authorities)
 
 Other:
 Done - Add global exception handling
+
+Bug/Concern:
+- On a second login, unauthorized error happens because pw is null seemingly because of User.eraseCredentials() call.
