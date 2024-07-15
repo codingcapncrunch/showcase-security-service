@@ -5,6 +5,7 @@ Done - Add healthcheck API (/health)
 Done - Create an App JWT request API (no credentials required)
 Done - Create a set of user credentials (in memory)
 Done - Update App JWT request API to require user credentials (i.e. /login, /encodePassword, and /secure)
+Done - separated user from user security details (mocked DB entities)
 In Progress - Create and assign various user properties (roles/authorities)
 - Create a set of APIs that require various user JWT roles
 - Expose administrative APIs to manage user credentials and user properties (roles)

@@ -2,11 +2,11 @@ package com.org.securityservice.domain.service.user;
 
 import com.org.securityservice.api.config.exception.AppException;
 import com.org.securityservice.api.config.exception.ExceptionEnum;
-import com.org.securityservice.domain.model.ShowCaseUser;
 import com.org.securityservice.domain.model.UserRegion;
-import com.org.securityservice.utils.Utils;
+import com.org.securityservice.domain.model.UserRole;
+import com.org.securityservice.domain.model.mockentity.MockUserEntity;
+import com.org.securityservice.utils.ExceptionUtil;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -16,38 +16,44 @@ import java.util.*;
 @Service
 public class UserRepositoryImpl implements UserRepository {
 
-    private Map<String, ShowCaseUser> userMap;
+    private Map<String, MockUserEntity> userMap;
 
     public UserRepositoryImpl() {
-        Map<String, ShowCaseUser> defaultUserMap = new HashMap<>();
+
+        this.userMap = new HashMap<>();
         String id = UUID.randomUUID().toString();
-        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        defaultUserMap.put(id, new ShowCaseUser("admin@gmail.com", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6", authorities, id, "admin", UserRegion.US_EAST));
+        Set<UserRole> roles = new HashSet<>();
+        roles.add(UserRole.ROLE_USER);
+        roles.add(UserRole.ROLE_ADMIN);
+        userMap.put(id, new MockUserEntity(id, "admin@gmail.com", UserRegion.US_EAST, "admin", roles));
 
         id = UUID.randomUUID().toString();
-        authorities.clear();
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        defaultUserMap.put(id, new ShowCaseUser("user1@gmail.com", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6", authorities, id, "user1", UserRegion.US_WEST));
+        roles.clear();
+        roles.add(UserRole.ROLE_USER);
+        userMap.put(id, new MockUserEntity(id, "user1@gmail.com", UserRegion.US_CENTRAL, "user1", roles));
 
         id = UUID.randomUUID().toString();
-        authorities.clear();
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        defaultUserMap.put(id, new ShowCaseUser("user2@gmail.com", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6", authorities, id, "user2", UserRegion.US_CENTRAL));
+        roles.clear();
+        roles.add(UserRole.ROLE_USER);
+        userMap.put(id, new MockUserEntity(id, "user2@gmail.com", UserRegion.US_CENTRAL, "user2", roles));
 
         id = UUID.randomUUID().toString();
-        authorities.clear();
-        authorities.add(new SimpleGrantedAuthority("ROLE_MANAGER"));
-        defaultUserMap.put(id, new ShowCaseUser("manager@gmail.com", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6", authorities, id, "manager", UserRegion.US_CENTRAL));
+        roles.clear();
+        roles.add(UserRole.ROLE_USER);
+        roles.add(UserRole.ROLE_MANAGER);
+        userMap.put(id, new MockUserEntity(id, "manager@gmail.com", UserRegion.US_EAST, "manager", roles));
 
-        this.userMap = defaultUserMap;
     }
 
     @Override
-    public ShowCaseUser getUserByUsername(String username) {
+    public Collection<MockUserEntity> getAllUsers() {
+        return new HashSet<>(this.userMap.values());
+    }
+
+    @Override
+    public MockUserEntity getUserByUsername(String username) {
         if (!StringUtils.isEmpty(username)){
-            for (ShowCaseUser user : this.userMap.values()){
+            for (MockUserEntity user : this.userMap.values()){
                 if(user.getUsername().equalsIgnoreCase(username)){
                     return user;
                 }
@@ -57,30 +63,42 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public ShowCaseUser getUserById(String id) {
+    public MockUserEntity getUserById(String id) {
         return this.userMap.get(id);
     }
 
     @Override
     public void deleteUserByUserId(String id) {
         if (StringUtils.isEmpty(id)){
-            Utils.throwException(new AppException(ExceptionEnum.USER1000, "provided id is null"));
+            ExceptionUtil.throwException(new AppException(ExceptionEnum.USER1000, "provided id is null"));
         }
         if (this.userMap.get(id)==null){
-            Utils.throwException(new AppException(ExceptionEnum.USER1000, "provided id: "+id));
+            ExceptionUtil.throwException(new AppException(ExceptionEnum.USER1000, "provided id: "+id));
         }
         this.userMap.remove(id);
     }
 
     @Override
-    public ShowCaseUser addUser(ShowCaseUser user) {
-        log.warn("UserRepositoryImpl.addUser() NOT yet implemented");
-        return null;
+    public MockUserEntity addUser(MockUserEntity user) {
+        this.validateUser(user);
+        String id = UUID.randomUUID().toString();
+        userMap.put(id, new MockUserEntity(id, user.getUsername(), user.getRegion(), user.getDisplayName(), user.getRoles()));
+        return user;
     }
 
     @Override
-    public ShowCaseUser updateUser(ShowCaseUser user) {
+    public MockUserEntity updateUser(MockUserEntity user) {
         log.warn("UserRepositoryImpl.updateUser() NOT yet implemented");
         return null;
+    }
+
+    private void validateUser(MockUserEntity user){
+        if (user == null){
+            log.error("Invalid user object - is null");
+            ExceptionUtil.throwException(new AppException(ExceptionEnum.USER1004));
+        } else if (StringUtils.isEmpty(user.getUsername()) || user.getRegion() == null || user.getRoles() == null || user.getRoles().isEmpty()) {
+            log.error("Invalid user object: {}", user.toString());
+            ExceptionUtil.throwException(new AppException(ExceptionEnum.USER1004));
+        }
     }
 }

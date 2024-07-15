@@ -1,17 +1,21 @@
 package com.org.securityservice.domain.service.user;
 
-import com.org.securityservice.domain.model.ShowCaseUser;
+import com.org.securityservice.domain.model.mockentity.MockUserEntity;
+
+import java.util.Collection;
 
 public interface UserRepository {
 
-    ShowCaseUser getUserByUsername(String email);
+    Collection<MockUserEntity> getAllUsers();
 
-    ShowCaseUser getUserById(String id);
+    MockUserEntity getUserByUsername(String email);
+
+    MockUserEntity getUserById(String id);
 
     void deleteUserByUserId(String id);
 
-    ShowCaseUser addUser(ShowCaseUser user);
+    MockUserEntity addUser(MockUserEntity user);
 
-    ShowCaseUser updateUser(ShowCaseUser user);
+    MockUserEntity updateUser(MockUserEntity user);
 
 }

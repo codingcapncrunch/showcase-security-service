@@ -2,7 +2,7 @@ package com.org.securityservice.api.config;
 
 import com.org.securityservice.api.config.exception.AppException;
 import com.org.securityservice.api.config.exception.ExceptionEnum;
-import com.org.securityservice.utils.Utils;
+import com.org.securityservice.utils.ExceptionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.AuthenticationException;
@@ -27,6 +27,6 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
-        Utils.throwException(new AppException(ExceptionEnum.AUTH1000));
+        ExceptionUtil.throwException(new AppException(ExceptionEnum.AUTH1000));
     }
 }

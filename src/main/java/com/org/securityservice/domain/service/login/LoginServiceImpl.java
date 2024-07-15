@@ -6,7 +6,7 @@ import com.org.securityservice.domain.model.JwtRequest;
 import com.org.securityservice.domain.model.JwtResponse;
 import com.org.securityservice.domain.service.token.TokenService;
 import com.org.securityservice.domain.service.user.JwtUserDetailsService;
-import com.org.securityservice.utils.Utils;
+import com.org.securityservice.utils.ExceptionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,11 +31,11 @@ public class LoginServiceImpl implements LoginService {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         } catch (DisabledException e) {
-            Utils.throwException(new AppException(ExceptionEnum.USER1002, request.getUsername()));
+            ExceptionUtil.throwException(new AppException(ExceptionEnum.USER1002, request.getUsername()));
         } catch (BadCredentialsException e) {
-            Utils.throwException(new AppException(ExceptionEnum.USER1003, request.getUsername()));
+            ExceptionUtil.throwException(new AppException(ExceptionEnum.USER1003, request.getUsername()));
         } catch (InternalAuthenticationServiceException e){
-            Utils.throwException(new AppException(ExceptionEnum.AUTH1003, e.getMessage()));
+            ExceptionUtil.throwException(new AppException(ExceptionEnum.AUTH1003, e.getMessage()));
         }
 
         final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(request.getUsername());

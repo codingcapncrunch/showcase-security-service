@@ -1,6 +1,6 @@
 package com.org.securityservice.utils;
 
-public class Utils {
+public class ExceptionUtil {
 
     @SuppressWarnings("unchecked")
     private static <T extends Throwable> void throwException(Throwable exception, Object dummy) throws T {
@@ -8,6 +8,6 @@ public class Utils {
     }
 
     public static void throwException(Throwable exception){
-        Utils.<RuntimeException>throwException(exception, null);
+        ExceptionUtil.<RuntimeException>throwException(exception, null);
     }
 }

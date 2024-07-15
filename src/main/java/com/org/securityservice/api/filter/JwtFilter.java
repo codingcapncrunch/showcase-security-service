@@ -4,10 +4,9 @@ import com.org.securityservice.api.config.exception.AppException;
 import com.org.securityservice.api.config.exception.ExceptionEnum;
 import com.org.securityservice.domain.service.token.TokenService;
 import com.org.securityservice.domain.service.user.JwtUserDetailsService;
-import com.org.securityservice.utils.Utils;
+import com.org.securityservice.utils.ExceptionUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -51,13 +50,13 @@ public class JwtFilter extends OncePerRequestFilter {
                     username = tokenService.getUsernameFromToken(token);
                 } catch (IllegalArgumentException e) {
                     log.error("Unable to get JWT Token");
-                    Utils.throwException(new AppException(ExceptionEnum.JWT1004));
+                    ExceptionUtil.throwException(new AppException(ExceptionEnum.JWT1004));
                 } catch (ExpiredJwtException e) {
                     log.error("JWT Token has expired");
-                    Utils.throwException(new AppException(ExceptionEnum.JWT1003));
+                    ExceptionUtil.throwException(new AppException(ExceptionEnum.JWT1003));
                 } catch (Exception e){
                     log.error("JWT Exception");
-                    Utils.throwException(new AppException(ExceptionEnum.JWT1002));
+                    ExceptionUtil.throwException(new AppException(ExceptionEnum.JWT1002));
                 }
             } else {
                 log.debug("Bearer token not found");

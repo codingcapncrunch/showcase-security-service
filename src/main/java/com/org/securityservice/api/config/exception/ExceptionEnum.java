@@ -18,7 +18,20 @@ public enum ExceptionEnum {
     USER1000("Invalid user id", HttpStatus.BAD_REQUEST),
     USER1001("User not found", HttpStatus.BAD_REQUEST),
     USER1002("User disabled", HttpStatus.UNAUTHORIZED),
-    USER1003("Invalid credentials", HttpStatus.UNAUTHORIZED);
+    USER1003("Invalid credentials", HttpStatus.UNAUTHORIZED),
+    USER1004("Invalid user details for add user", HttpStatus.BAD_REQUEST),
+    USER1005("Invalid user security for add user security", HttpStatus.BAD_REQUEST),
+    USER1006("Invalid username provided", HttpStatus.BAD_REQUEST),
+    USER1007("User security not found", HttpStatus.INTERNAL_SERVER_ERROR),
+
+    MNGUSER1000("Invalid manager user request", HttpStatus.BAD_REQUEST),
+
+    USERROLE1000("Invalid user role provided", HttpStatus.BAD_REQUEST);
+
+
+
+
+
 
     public final String message;
     public final HttpStatus httpStatus;
