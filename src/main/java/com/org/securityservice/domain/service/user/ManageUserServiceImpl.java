@@ -62,13 +62,16 @@ public class ManageUserServiceImpl implements ManageUserService {
     public ShowCaseUser getUserByUsername(String username) {
         if (!StringUtils.isEmpty(username)){
             for (MockUserEntity user : this.userRepository.getAllUsers()){
-                MockUserSecurity userSecurity = this.userSecurityRepository.getUserSecurity(user.getId());
-                if (userSecurity!=null){
-                    return new ShowCaseUser(user.getId(), user.getUsername(), user.getDisplayName(), user.getRegion(), user.getRoles(),
-                            userSecurity.isAccountLocked(), userSecurity.isAccountExpired(), userSecurity.isCredentialsExpired(), userSecurity.isEnabled());
-                } else {
-                    log.error("User security object not found for username: {}", username);
-                    ExceptionUtil.throwException(new AppException(ExceptionEnum.USER1007));
+                if (user.getUsername().equalsIgnoreCase(username)){
+                    //user match
+                    MockUserSecurity userSecurity = this.userSecurityRepository.getUserSecurity(user.getId());
+                    if (userSecurity!=null){
+                        return new ShowCaseUser(user.getId(), user.getUsername(), user.getDisplayName(), user.getRegion(), user.getRoles(),
+                                userSecurity.isAccountLocked(), userSecurity.isAccountExpired(), userSecurity.isCredentialsExpired(), userSecurity.isEnabled());
+                    } else {
+                        log.error("User security object not found for username: {}", username);
+                        ExceptionUtil.throwException(new AppException(ExceptionEnum.USER1007));
+                    }
                 }
             }
         } else {
