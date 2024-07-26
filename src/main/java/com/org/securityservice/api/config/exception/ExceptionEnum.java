@@ -25,6 +25,7 @@ public enum ExceptionEnum {
     USER1007("User security not found", HttpStatus.INTERNAL_SERVER_ERROR),
 
     MNGUSER1000("Invalid manager user request", HttpStatus.BAD_REQUEST),
+    MNGUSER1001("Invalid username and/or role for add role request", HttpStatus.BAD_REQUEST),
 
     USERROLE1000("Invalid user role provided", HttpStatus.BAD_REQUEST);
 

@@ -28,20 +28,23 @@ public class UserRepositoryImpl implements UserRepository {
         userMap.put(id, new MockUserEntity(id, "admin@gmail.com", UserRegion.US_EAST, "admin", roles));
 
         id = UUID.randomUUID().toString();
-        roles.clear();
-        roles.add(UserRole.ROLE_USER);
-        userMap.put(id, new MockUserEntity(id, "user1@gmail.com", UserRegion.US_CENTRAL, "user1", roles));
+        Set<UserRole> roles1 = new HashSet<>();
+        roles1.clear();
+        roles1.add(UserRole.ROLE_USER);
+        userMap.put(id, new MockUserEntity(id, "user1@gmail.com", UserRegion.US_CENTRAL, "user1", roles1));
 
         id = UUID.randomUUID().toString();
-        roles.clear();
-        roles.add(UserRole.ROLE_USER);
-        userMap.put(id, new MockUserEntity(id, "user2@gmail.com", UserRegion.US_CENTRAL, "user2", roles));
+        Set<UserRole> roles2 = new HashSet<>();
+        roles2.clear();
+        roles2.add(UserRole.ROLE_USER);
+        userMap.put(id, new MockUserEntity(id, "user2@gmail.com", UserRegion.US_CENTRAL, "user2", roles2));
 
         id = UUID.randomUUID().toString();
-        roles.clear();
-        roles.add(UserRole.ROLE_USER);
-        roles.add(UserRole.ROLE_MANAGER);
-        userMap.put(id, new MockUserEntity(id, "manager@gmail.com", UserRegion.US_EAST, "manager", roles));
+        Set<UserRole> roles3 = new HashSet<>();
+        roles3.clear();
+        roles3.add(UserRole.ROLE_USER);
+        roles3.add(UserRole.ROLE_MANAGER);
+        userMap.put(id, new MockUserEntity(id, "manager@gmail.com", UserRegion.US_EAST, "manager", roles3));
 
     }
 
@@ -88,7 +91,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public MockUserEntity updateUser(MockUserEntity user) {
-        log.warn("UserRepositoryImpl.updateUser() NOT yet implemented");
+
         return null;
     }
 

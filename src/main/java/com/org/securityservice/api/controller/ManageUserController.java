@@ -36,11 +36,12 @@ public class ManageUserController {
 
     @PreAuthorize("hasAuthority('ROLE_MANAGER')")
     @PutMapping("/addRole")
-    public ResponseEntity addUserRole(@RequestParam("newRole") String role, @RequestBody @Valid UserRequest userRequest) {
+    public ResponseEntity addUserRole(@RequestParam("newRole") UserRole role, @RequestBody @Valid UserRequest userRequest) {
 
-        UserRole userRole = this.userRoleHelperUtil.validateAndConvertToUserRole(role);
-        //todo
-        this.manageUserService.addRole(userRole, userRequest.getUsername());
+        // Hum.  Not sure why I went through the effort of creating this util helper when I could just define the enum directly as the request param vs a string req param
+        // UserRole userRole = this.userRoleHelperUtil.validateAndConvertToUserRole(role);
+
+        this.manageUserService.addRole(role, userRequest.getUsername());
 
         return ResponseEntity.ok("success");
     }

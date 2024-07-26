@@ -83,6 +83,22 @@ public class ManageUserServiceImpl implements ManageUserService {
 
     @Override
     public ShowCaseUser addRole(UserRole role, String username) {
+
+        if (!StringUtils.isEmpty(username) && role!=null){
+            MockUserEntity userEntity = this.userRepository.getUserByUsername(username);
+            if (userEntity!=null){
+                userEntity.getRoles().add(role);
+                MockUserEntity updatedUserEntity = this.userRepository.updateUser(userEntity);
+                return this.translateMockUserToShowCaseUser(updatedUserEntity);
+
+            } else {
+                log.error("Null user for username '{}' for addRole request", username);
+                ExceptionUtil.throwException(new AppException(ExceptionEnum.USER1001));
+            }
+            return null;
+        } else {
+            ExceptionUtil.throwException(new AppException(ExceptionEnum.MNGUSER1001));
+        }
         return null;
     }
 
@@ -99,5 +115,16 @@ public class ManageUserServiceImpl implements ManageUserService {
     @Override
     public ShowCaseUser updateDisplayName(String newDisplayName, String username) {
         return null;
+    }
+
+    private ShowCaseUser translateMockUserToShowCaseUser(MockUserEntity user){
+        if (user!=null){
+            MockUserSecurity userSecurity = this.userSecurityRepository.getUserSecurity(user.getId());
+            return new ShowCaseUser(user.getId(), user.getUsername(), user.getDisplayName(), user.getRegion(), user.getRoles(),
+                    userSecurity.isAccountLocked(), userSecurity.isAccountExpired(), userSecurity.isCredentialsExpired(), userSecurity.isEnabled());
+        } else {
+             log.error("Unexpected error at ManageUserServiceImpl.translateMockUserToShowCaseUser - null user");
+             return null;
+        }
     }
 }
